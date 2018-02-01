@@ -4,61 +4,64 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		Scanner sc = new Scanner(System.in);
 		
-		int m = sc.nextInt();
-		int s = sc.nextInt();
+		int len = sc.nextInt();
+		int sum = sc.nextInt();
 		
-		if(s == 0 && m > 1) {
-			System.out.println("-1 -1");
-			return;
-		} else if (s == 0 && m == 1) {
-			System.out.println("0 0");
-			return;
-		}
+		int min, max;
 		
-		int cNine = s/9;
-		int cOther = s%9;
-		int cTotal = cOther == 0 ? cNine : cNine +1;
+		if(len == 1) min = 0;
+		else min = 1;
 		
-		if (cTotal > m) { 
+		max = len * 9;
+		
+		if(sum < min || sum > max) {
 			System.out.println("-1 -1");
 			return;
 		}
 		
-		int[] max = new int[m];
-		int[] min = new int[m];
+		int[] minArr = new int[len];
+		int[] maxArr = new int[len];
 		
-
-		int iter, count;
-		//count max
-		for(iter=0; iter<cNine; iter++) {
-			max[iter] = 9;
-		}			
-		if(cOther != 0) {
-			max[iter] = cOther;
+		//Calculate min
+		minArr[0] = min;
+		for(int i=1; i<minArr.length; i++) {
+			minArr[i] = 0;
 		}
 		
-		//count min
-		if(cOther == 0) {
-			cOther = 9;
-			--cNine;
-		}
-		for(iter=m-1, count=1; count<=cNine; --iter, count++) {
-			min[iter] = 9;
-		}
-		if((m-cNine) > 1) {
-			min[iter] = cOther-1;
-			min[0] = 1;
-		} else {
-			min[0] = cOther;
+		int remaining = sum - min;
+		int pos = len-1;
+		while(remaining > 0) {
+			int toAdd = Math.min(9, remaining);
+			minArr[pos] += toAdd;
+			remaining -= toAdd;
+			
+			--pos;
 		}
 		
-		
-		for(int i=0; i<m; i++){
-			System.out.print(min[i]);
+		//Calculate max
+		for(int i=0; i<maxArr.length; i++) {
+			maxArr[i] = 9;
 		}
+		
+		remaining = max - sum;
+		pos = len-1;
+		while(remaining > 0) {
+			int toSub = Math.min(9, remaining);
+			maxArr[pos] -= toSub;
+			remaining -= toSub;
+			
+			--pos;
+		}
+		
+		print(minArr);
 		System.out.print(" ");
-		for(int i=0; i<m; i++){
-			System.out.print(max[i]);
+		print(maxArr);
+		System.out.println();
+	}
+	
+	private static void print(int[] arr) {
+		for(int i=0; i<arr.length; i++) {
+			System.out.print(arr[i]);
 		}
 	}
 }
