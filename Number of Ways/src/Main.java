@@ -3,43 +3,40 @@ import java.util.*;
 public class Main {
 	public static void main(String[] args) throws Exception {
 		Scanner sc = new Scanner(System.in);
-		
 		int n = sc.nextInt();
-		if(n<3) {
-			System.out.println(0);
-			return;
+		long[] nums = new long[n];
+		for(int i=0; i<n; i++) {
+			nums[i] = sc.nextLong();
 		}
 		
-		int[] array = new int[n];
 		long sum = 0;
 		for(int i=0; i<n; i++) {
-			array[i] = sc.nextInt();
-			sum += array[i];
+			sum += nums[i];
 		}
 		if(sum%3 != 0) {
-			System.out.println(0);
+			System.out.println("0");
 			return;
 		}
 		
-		sum /= 3;
-		
-		long[] sums = new long[n+1];	
-		long sumK = 0;
-		for(int k=n-1; k>=2; k--) {
-			sumK += array[k];
-			if(sumK == sum) {
-				sums[k] = sums[k+1] + 1;
-			} else {
-				sums[k] = sums[k+1];
+		long target = sum / 3;
+		long count = 0;
+		long partSum = 0;
+		long[] possibles = new long[n];
+		for(int i=n-1; i>=0; i--) {
+			partSum += nums[i];
+			if(partSum == target) {
+				++count;
 			}
+			
+			possibles[i] = count;
 		}
 		
-		long count = 0;
-		long sumI = 0;
-		for(int i=0; i<=n-3; i++) {
-			sumI += array[i];
-			if(sumI == sum) {
-				count += sums[i+2];
+		count = 0;
+		partSum = 0;
+		for(int i=0; i<n-2; i++) {
+			partSum += nums[i];
+			if(partSum == target) {
+				count += possibles[i+2];
 			}
 		}
 		
