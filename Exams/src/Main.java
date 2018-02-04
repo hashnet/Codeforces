@@ -1,7 +1,10 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
-	private static class Date {
+	private static class Date implements Comparable{
 		int a;
 		int b;
 		
@@ -9,36 +12,39 @@ public class Main {
 			this.a = a;
 			this.b = b;
 		}
+		
+		@Override
+		public int compareTo(Object arg0) {
+			Date other = (Date) arg0;
+			
+			if(this.a == other.a) {
+				return this.b - other.b;
+			} else {
+				return this.a - other.a;
+			}
+		}
 	}
-	public static void main(String[] args) throws Exception {
+	
+	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
+		List<Date> dates = new ArrayList<>();
 		int n = sc.nextInt();
-		
-		List<Date> dates = new ArrayList<Date>();
-		for(int i=0; i<n; i++) {
+		while(n-- > 0) {
 			dates.add(new Date(sc.nextInt(), sc.nextInt()));
 		}
 		
-		dates.sort(new Comparator<Date>(){
-			@Override
-			public int compare(Date o1, Date o2) {
-				if(o1.a == o2.a) return Integer.compare(o1.b, o2.b);
-				else return Integer.compare(o1.a, o2.a);
-			}			
-		});
+		Collections.sort(dates);
 		
-		int last = dates.get(0).a < dates.get(0).b ? dates.get(0).a : dates.get(0).b;
-		
-		for(int i=1; i<dates.size(); i++) {
-			if(dates.get(i).b >= last) {
-				last = dates.get(i).b;
+		int min = 0;
+		for(Date d : dates) {
+			if(d.b >= min) {
+				min = d.b;
 			} else {
-				last = dates.get(i).a;
+				min = d.a;
 			}
 		}
 		
-		
-		System.out.println(last);
+		System.out.println(min);
 	}
 }
