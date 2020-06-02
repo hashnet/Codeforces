@@ -13,6 +13,13 @@ Scanner sc = new Scanner(new File("src/input.txt"));
 Scanner sc = new Scanner(System.in);
 int n = sc.nextInt();
 String string = sc.nextLine();
+String string = sc.next();
+// if the input is like 
+// 10
+// abc
+// the sc.nextInt() will return 10 and then sc.nextLine() will return "" as the curson didn't move to next line and so it returns the empty string till the end of line.
+// In this case it is better to use sc.nextInt() to get 10 and then sc.next() to get "abc". sc.next() return the next complete token.
+
 
 
 # Writing Output (performance increase)
